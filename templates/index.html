@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <head>
-    <title>{{ title }}</title>
+  {% block title %}
+  <title>Home</title>
+  {% endblock %}
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,7 +26,7 @@
                     <a class="nav-link ml-auto" href="/">Home <span class="sr-only">(current)</span></a>
                   </li>
                 </ul>
-              <form class="form-inline my-2 my-lg-0 w-500">
+              <form action="/search" method="GET" class="form-inline my-2 my-lg-0 w-500">
                 <input class="form-control mr-sm-1 w-auto" type="search" placeholder="Search for a book name">
                 <button class="btn btn-outline-light my-2 my-sm-0 w-auto" type="submit">Search</button>
             </form>

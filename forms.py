@@ -2,10 +2,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, BooleanField, SelectMultipleField, SelectField, PasswordField, SubmitField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
+from flask_security.forms import RegisterForm
 
-class UserForm(FlaskForm):
-    email = StringField(u'Email: ',validators=[DataRequired()])
-    password = StringField(u'Password: ',validators=[DataRequired()])
+class SearchForm(FlaskForm):
+    searchField = StringField()
 
 class BookForm(FlaskForm):
     title = StringField(u'Title: ',validators=[DataRequired()])
@@ -14,14 +14,12 @@ class BookForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = StringField(u'Username: ',validators=[DataRequired()])
-    password = StringField(u'Password: ',validators=[DataRequired()])
+    password = PasswordField(u'Password: ',validators=[DataRequired()])
 
-class RegisterUser(FlaskForm):
+class RegisterUser(RegisterForm):
     first_name = StringField(u'First Name', validators=[DataRequired()])
     last_name = StringField(u'Last Name',validators=[DataRequired()])
-    email = StringField(u'Email: ',validators=[DataRequired()])
     username = StringField(u'Username: ',validators=[DataRequired()])
-    password = PasswordField(u'Password: ',validators=[DataRequired()])
     year = DateField(u'Year', validators=[DataRequired()])
     #genre_choices = [(g.genre) for g in Book.query.order_by('genre')]
     #author_choices = [(m.title) for m in Book.query.order_by('authors')]

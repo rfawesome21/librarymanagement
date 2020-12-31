@@ -1,63 +1,54 @@
-from flask import render_template, flash, redirect, session, url_for, request, g
+from flask import render_template, flash, redirect, session, url_for, request, g, Blueprint
 from flask_admin.contrib.sqla import ModelView
-from models import User
+from models import User, Book
 import flask_login
-from flask_login import login_user, LoginManager, logout_user
-from forms import RegisterUser, LoginForm, BookForm, UserForm
-from __init__ import db,app
+from flask_login import login_user, LoginManager, logout_user, login_required, current_user
+from forms import RegisterUser, LoginForm, BookForm, SearchForm
+from __init__ import db, app, login_manager, admin
 
+main = Blueprint('main',__name__,
+                    static_folder='static',
+                    template_folder='templates')
 
-app.secret_key='12345'
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
+admin.add_view(ModelView(User,db.session))
+admin.add_view(ModelView(Book,db.session))
 
-@app.route("/")
+@main.route("/")
 def homepage():
-    return render_template("main.html", title = "Home")
+    if current_user.is_authenticated:
+        return redirect(url_for("main_bp.dashboard"))
+    return render_template("main.html", title = "Home") 
 
-@app.route("/register", methods = ['GET','POST'])
-def register():
-    form = RegisterUser()
-    if form.validate_on_submit():
-        existing_user = User.query.filter_by(email = form.email.data).first()
-        if existing_user is None:
-            user = User(first_name = form.first_name.data, last_name = form.last_name.data, email = form.email.data, user_name = form.username.data,
-                year = form.year.data)
-            user.set_password(form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            login_user(user)
-            flash("Login successful!")
-            return redirect(url_for("homepage"))
-        flash("A user already exists with that email address.")
-    return render_template("registeruser.html", form = form, title = "Register")
+@main.route("/search", methods = ['GET','POST'])
+def search_for_book():
+    pass
 
-@app.route("/login", methods = ['GET','POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email = form.email.data).first()
-        if user and user.check_password(password = form.password.data):
-            login_user(user)
-            next_page = request.args.get('next')
-            return redirect(url_for(next_page or 'homepage'))
-        flash('Invalid username/password combination')
-        return redirect(url_for("login"))
-    return render_template("login.html",form = form, title = "Login") 
+main_bp = Blueprint(
+    'main_bp', __name__,
+    template_folder='templates',
+    static_folder='static'
+)
 
-@login_manager.user_loader
-def load_user(user_id):
-    """Check if user is logged-in on every page load."""
-    if user_id is not None:
-        return User.query.get(user_id)
-    return None
 
-@login_manager.unauthorized_handler
-def unauthorized():
-    """Redirect unauthorized users to Login page."""
-    flash('You must be logged in to view that page.')
-    return redirect(url_for('auth_bp.login'))
+@main_bp.route('/registered', methods=['GET'])
+@login_required
+def dashboard():
+    """Logged-in User Dashboard."""
+    return render_template(
+        'base.html',
+        title='Dashboard | Personal Library',
+        current_user=current_user
+    )
+
+@main_bp.route('/logout')
+@login_required
+def logout():
+    """User log-out logic."""
+    logout_user()
+    return redirect(url_for("main.homepage"))
+
+app.register_blueprint(main)
+app.register_blueprint(main_bp)
 
 #runs the app
 if __name__ == "__main__":
