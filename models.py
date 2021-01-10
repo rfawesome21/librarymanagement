@@ -17,22 +17,10 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(200), index = True)
     password = db.Column(db.String(200),index = True)
     year = db.Column(db.Date)
-    roles = db.relationship('Role',secondary = roles_user, backref = 'users' , lazy = 'dynamic')
     active = db.Column(db.Boolean())
-    confirmed_at = db.Column(db.DateTime())
+    roles = db.relationship('Role',secondary = roles_user, backref = 'users')
     #book = db.relationship('Book', secondary = enrollment)
-    #def __repr__(self):
-    #   return f"User('{self.firstname}', '{self.lastname}', '{self.username}','{self.password}','{self.email}','{self.year}')"
-    def __init__(self, first_name, last_name, username, password, email, year, roles, active):
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.password = password
-        self.email = email
-        self.year = year
-        self.roles = roles
-        self.active = active
-
+    
 class Role(RoleMixin, db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(200),index = True)
@@ -50,7 +38,7 @@ class Book(db.Model):
         self.author = author
         self.genre = genre
 
-db.create_all()
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore, register_form = RegisterUser)
+db.create_all()
 
