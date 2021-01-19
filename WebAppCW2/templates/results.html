@@ -1,0 +1,90 @@
+{% extends "index.html" %}
+{% block title %}
+<title>
+    {% for message in get_flashed_messages() %}
+        {{message}}
+    {% endfor %}</title>
+{% endblock %}
+{% block content %}
+{% if current_user.is_authenticated %}
+<nav class="navbar navbar-dark navbar-expand-sm bg-secondary mb-5" style="opacity: 0.5;">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          {% if current_user.is_authenticated %}
+              <p class="text-white lead"> Hello, {{ current_user.username }}!</p>
+          {% endif %}
+      </li>       
+      <li class="nav-item">
+        <a class="nav-link text-white lead" href="/">Dashboard</a>
+      </li>           
+</ul>
+<form action="/search" method="POST" class="form-inline my-2 my-lg-0 w-500">
+{{ form.book_search(class="form-control" ,placeholder = "Search for a book") }}
+<button class="btn btn-outline-light my-2 my-sm-0 w-auto" type="submit" aria-label="search">Search</button>
+</form>
+</div>
+<div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
+<ul class="navbar-nav ml-auto">
+<li class="nav-item">
+  <a class="nav-link text-white lead" href="/return">Return a book <span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link text-white lead" href="/logout">Logout <span class="sr-only">(current)</span></a>
+      </li>
+</ul>
+</div>
+</nav>
+{% else %}
+<nav class="navbar navbar-dark navbar-expand-sm bg-secondary text-secondary lead" style="opacity: 0.5;">
+    <button class="navbar-toggler text-secondary lead" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link ml-auto text-white lead" href="/"><i class="material-icons" aria-label="home">home</i> <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        <form action="/search" method="POST" class="form-inline my-2 my-lg-0 w-500">
+          {{ form.book_search(class="form-control" ,placeholder = "Search for a book") }}
+          <button class="btn btn-outline-white my-2 my-sm-0 w-auto" type="submit" aria-label="search"><i class="material-icons">search</i></button>
+      </form>
+    </div>
+    <div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link text-white lead" href="/login">Login <span class="sr-only">(current)</span></a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link text-white lead" href="/register">Register <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+  </nav>
+  {% endif %}
+{% if books|length >= 1 %}
+<div class="container mt-5 text-center">
+{% for book in books %}
+    <div class="col mt-5"><a style="text-decoration: none; color: white; cursor: pointer;" class="results" type="{{book.name}}" href="/results/{{book.id}}" id = "{{book.id}}">
+    <div class="" style="font-family: Tangerine;"><h3>{{book.name}}</h3></div>
+    <div class=""><h6 class="mr-3">Author: <span class="ml-3">{{book.author}}</span></h6></div>
+    <div class="mb-5"><h6>Genres: <span class="ml-3">{{book.genre}}</span></h6></div></a>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div class="container text-center mt-5 text-danger" style="font-family: Source Sans Pro;"><h1 >No books found!</h1></div>
+{% endif %}
+<div class="container mt-5 text-right">
+  <button class="btn btn-primary mb-5" style="background-color: greenyellow; color: black;" id = "button">Go back to the top</button>
+</div>
+<script>
+  $("#button").click(function(){
+    $(window).scrollTop(0)
+  })
+</script>
+{% endblock %}

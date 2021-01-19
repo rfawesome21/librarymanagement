@@ -1,0 +1,53 @@
+{% extends "index.html" %}
+{% block title %}
+<title>Home Page</title>
+{% endblock %}
+{{super()}}
+{% block content %}
+<div class="container-fluid p-0">
+<nav class="navbar navbar-dark navbar-expand-sm bg-secondary" style="opacity: 0.5;">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link ml-auto text-white lead" href="/"><i class="material-icons">home</i> <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        <form action="/search" method="POST" class="form-inline my-2 my-lg-0 w-500">
+          {{ form.book_search(class="form-control" ,placeholder = "Search for a book") }}
+          <button class="btn btn-outline-white my-2 my-sm-0 w-auto" type="submit"><i class="material-icons">search</i></button>
+      </form>
+    </div>
+    <div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link text-white lead" href="/login">Login <span class="sr-only">(current)</span></a>
+          </li>
+        <li class="nav-item">
+          <a class="nav-link text-white lead" href="/register">Register <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+  </nav>
+    {% for message in get_flashed_messages() %}
+        {{message}}
+    {% endfor %}
+    <div class="header ml-5">
+        <h1 class="text-left h-auto w-auto mt-5" >Bibliotheca</h1>
+        <h5>Where books meet people</h5>
+    </div>
+    <div class="container mt-5 text-center">
+      <h1 class= "" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+      Book of the Day</h1>
+      <h2 class="mt-4 font-weight-bold h1" style="font-family: Tangerine;">{{book_of_the_day.name}}</h2>
+      <div class=""><h6 class="mr-3 font-weight-bold">Author: <span class="ml-3">{{book_of_the_day.author}}</span></h6></div>
+      <div class="font-weight-bold"><h6 class="font-weight-bold">Genres: <span class="ml-3 font-weight-bold">{{book_of_the_day.genre}}</span></h6></div>
+      <div class="mb-5 mt-3 text-default font-weight-bold">{{book_of_the_day.synopsis}}</div>
+    </div>
+    <div class="text-right mr-5">
+      <button class="btn" style="background-color: greenyellow;"><a href="/viewbook" style="text-decoration: none;color: black;">View All books</a></button>
+    </div>
+  </div>
+{% endblock %}

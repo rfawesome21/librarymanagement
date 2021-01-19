@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+{% block title %}
+<title>
+  {{title}}
+</title>
+{% endblock %}
+{{super()}}
+{% block content %}
+{% if current_user.is_authenticated %}
+<nav class="navbar navbar-dark navbar-expand-sm bg-secondary" style="opacity: 0.5;">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item text-white lead">
+          {% if current_user.is_authenticated %}
+              <p class="text-white lead"> Hello, {{ current_user.username }}!</p>
+          {% endif %}
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white lead" href="/">Dashboard</a>
+      </li>                  
+</ul>
+<form action="/search" method="POST" class="form-inline my-2 my-lg-0 w-500">
+{{ form.book_search(class="form-control" ,placeholder = "Search for a book") }}
+<button class="btn btn-outline-white my-2 my-sm-0 w-auto" type="submit" aria-label="search"><i class="material-icons">search</i></button>
+</form>
+</div>
+<div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
+<ul class="navbar-nav ml-auto">
+<li class="nav-item">
+  <a class="nav-link text-white lead" href="/return">Return a book <span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link text-white lead" href="/logout">Logout <span class="sr-only">(current)</span></a>
+      </li>
+</ul>
+</div>
+</nav>
+{% else %}
+<nav class="navbar navbar-dark navbar-expand-sm bg-secondary" style="opacity: 0.5;">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <a class="nav-link ml-auto text-white lead" href="/"><i class="material-icons" aria-label="home">home</i> <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        <form action="/search" method="POST" class="form-inline my-2 my-lg-0 w-500">
+          {{ form.book_search(class="form-control" ,placeholder = "Search for a book") }}
+          <button class="btn btn-outline-white my-2 my-sm-0 w-auto" type="submit" aria-label = "search">Search</button>
+      </form>
+    </div>
+    <div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item ">
+            <a class="nav-link text-white lead" href="/login">Login <span class="sr-only">(current)</span></a>
+          </li>
+        <li class="nav-item ">
+          <a class="nav-link text-white lead" href="/register">Register <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+  </nav>
+  {% endif %}
+  <div class="container-fluid mt-3 text-white">
+    <div class="" style="font-family: Tangerine;"><h1>{{book.name}}</h1></div>
+    <div><h6> by {{book.author}}</h6></div>
+    <p>{{ book.synopsis }}</p>
+    <form action="/results/{{book.id}}" method="POST" class="form-inline my-2 my-lg-0 w-500">
+    {{form2.book_borrow(class="btn btn-primary my-2 my-sm-0 w-auto", value = "Borrow")}}
+    </form>
+  </div>
+  <ul class="mt-5">
+  {% for messages in get_flashed_messages() %}
+  <li>{{messages}}</li>
+  {% endfor %}
+</ul>
+  {% endblock %}
