@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <head>
-    <title>{{ title }}</title>
+  {% block title %}
+  {% endblock %}
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <link rel="stylesheet" href={{url_for('static',filename = 'css/main.css')}}>
     <link rel="stylesheet" href={{url_for('static',filename = 'Bootstrap/css/bootstrap.min.css')}}>
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
     {% block head %}
     {% endblock %}
     </head>
-    <body>
-        <nav class="navbar navbar-dark navbar-expand-sm bg-primary">
+    <body style="background-image: linear-gradient(160deg, #2c3e50, #3498db);background-size: cover; margin: 0; background-attachment: fixed;" id="main-body">
+        <nav id="nav" class="navbar navbar-dark navbar-expand-sm bg-secondary" style="opacity: 0.5;">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -22,32 +23,28 @@
               <ul class="navbar-nav mr-auto">
                   <li class="nav-item">
                     {% if current_user.is_authenticated %}
-                        <p class="text-white"> Hello, {{ current_user.username }}!</p>
+                        <p class="text-white text-white lead"> Hello, {{ current_user.username }}!</p>
                     {% endif %}
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white lead ml-3" href="/">Dashboard</a>
                 </li>                  
         </ul>
-        <form class="form-inline my-2 my-lg-0 w-500">
-            <input class="form-control mr-sm-1 w-auto" type="search" placeholder="Search available titles">
-            <button class="btn btn-outline-light my-2 my-sm-0 w-auto" type="submit">Search</button>
-        </form>
+        <form action="/search" method="POST" class="form-inline my-2 my-lg-0 w-500">
+          {{ form.book_search(class="form-control" ,placeholder = "Search for a book") }}
+          <button class="btn btn-outline-white my-2 my-sm-0 w-auto" type="submit" aria-label="search"><i class="material-icons">search</i></button>
+      </form>
     </div>
     <div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-              <a class="nav-link" href="/borrow">Borrow a book <span class="sr-only">(current)</span></a>
-            </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/return">Return a book <span class="sr-only">(current)</span></a>
+            <a class="nav-link text-white lead" href="/return">Return a book <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/logout">Logout <span class="sr-only">(current)</span></a>
+                <a class="nav-link text-white lead" href="/logout">Logout <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/change">Change Password <span class="sr-only">(current)</span></a>
-                  </li>
           </ul>
         </div>
-
 </nav>
 
 {% block content %}

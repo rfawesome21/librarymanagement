@@ -3,6 +3,25 @@
 <title>Register</title>
 {% endblock %}
 {% block content %}
+<nav class="navbar navbar-dark navbar-expand-sm bg-white" style="opacity: 0.5;">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link ml-auto text-secondary lead" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+  </div>
+  <div class="collapse navbar-collapse justify-content-flex-end" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+          <a class="nav-link text-secondary lead" href="/login">Login <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+</nav>
 {% from "security/_macros.html" import render_field_with_errors, render_field %}
 {% include "security/_messages.html" %}
 
@@ -62,12 +81,11 @@
   <div class="form-group">
   {{ render_field(register_user_form.submit, class="btn btn-primary") }}
   </div>
-  <div class="login-signup text-center">
+  <div class="login-signup text-center mb-5">
     <div>
       <span>Already have an account?</span>
-      <a href="{{ url_for_security('login') }}">Log in.</a>
+      <a href="{{ url_for_security('login') }}" class="text-white">Log in.</a>
     </div>
   </div>
 </form>
-{% include "security/_menu.html" %}
 {% endblock %}

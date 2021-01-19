@@ -4,8 +4,6 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 from flask_security.forms import RegisterForm
 
-class SearchForm(FlaskForm):
-    searchField = StringField()
 
 class BookForm(FlaskForm):
     title = StringField(u'Title: ',validators=[DataRequired()])
@@ -21,7 +19,16 @@ class RegisterUser(RegisterForm):
     last_name = StringField(u'Last Name',validators=[DataRequired()])
     username = StringField(u'Username: ',validators=[DataRequired()])
     year = DateField(u'Year', validators=[DataRequired()])
-    #genre_choices = [(g.genre) for g in Book.query.order_by('genre')]
-    #author_choices = [(m.title) for m in Book.query.order_by('authors')]
-    #genres = SelectMultipleField(u'Genres: ', coerce = int, choices = genre_choices)
-    #authors = SelectMultipleField(u'Authors: ', coerce = int, choices  = author_choices)
+
+class SearchBook(FlaskForm):
+    book_search = StringField()
+
+class BorrowForm(FlaskForm):
+    book_borrow = SubmitField()
+
+class ReturnForm(FlaskForm):
+    book_return = SubmitField()
+
+class changeUsernameForm(FlaskForm):
+    change_username = SubmitField()
+    new_username = StringField(u'New Username: ', validators = [DataRequired()])

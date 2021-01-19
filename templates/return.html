@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}
+<title>{{title}}</title>
+
+{% endblock %}
+{% block content %}
+
+{% if books|length %}
+{% for book in books %}
+<div class="container-fluid mt-3 text-white">
+    <div class="" style="font-family: Tangerine;"><h1>{{book.name}}</h1></div>
+    <div><h6> by {{book.author}}</h6></div>
+    <p>{{ book.synopsis }}</p>
+    <form action="/delete{{book.id}}" method="POST" class="form-inline my-2 my-lg-0 w-500">
+        {{form2.book_return(class="btn btn-primary my-2 my-sm-0 w-auto", value = "Return Book")}}
+    </form>
+  </div>
+{% for message in get_flashed_messages() %}
+<div class="container text-white">{{message}}</div>
+{% endfor %}
+{% endfor %}
+{% else %}
+<div class="text-white container mt-5">
+  <p class="display-4">You have not borrowed any books!</p>
+</div>
+{% endif %}
+{% endblock %}
